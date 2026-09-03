@@ -1,0 +1,88 @@
+# .github/workflows/validate-docs.yml
+name: Validate docs
+
+on:
+  push:
+    paths:
+      - "API-Endpoint-plan.md"
+      - "ERD.pdf"
+      - "RaceDay.sql"
+      - ".github/workflows/validate-docs.yml"
+  pull_request:
+    paths:
+      - "API-Endpoint-plan.md"
+      - "ERD.pdf"
+      - "RaceDay.sql"
+      - ".github/workflows/validate-docs.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate documentation artifacts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            "API-Endpoint-plan.md"
+            "ERD.pdf"
+            "RaceDay.sql"
+          )
+
+          for file in "${files[@]}"; do
+            if [[ ! -f "$file" ]]; then
+              echo "::error file=$file::Required file is missing"
+              exit 1
+            fi
+
+            if [[ ! -s "$file" ]]; then
+              echo "::error file=$file::Required file is empty"
+              exit 1
+            fi
+          done
+
+      - name: Validate Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: |
+            API-Endpoint-plan.md
+
+      - name: Validate PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends poppler-utils
+
+          # Check that the file is actually a readable PDF.
+          pdfinfo ERD.pdf >/tmp/erd-pdfinfo.txt
+
+          # Make sure it contains at least one page.
+          pages="$(awk -F: '/^Pages:/ {gsub(/ /, "", $2); print $2}' /tmp/erd-pdfinfo.txt)"
+
+          if [[ -z "$pages" || "$pages" -lt 1 ]]; then
+            echo "::error file=ERD.pdf::PDF has no pages"
+            exit 1
+          fi
+
+          echo "ERD.pdf: valid PDF, $pages page(s)"
+
+      - name: Validate SQL
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python -m pip install --disable-pip-version-check --quiet sqlfluff
+
+          # Parse/lint only. RaceDay.sql is never executed against a database.
+          sqlfluff lint RaceDay.sql --dialect postgres
