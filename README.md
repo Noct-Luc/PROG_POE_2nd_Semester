@@ -7,3 +7,4 @@ https://youtu.be/Rre0CA1Fvw0?si=_IYhLI3drS4w4vfa
 ## ERD and API endpoint
 <img width="1101" height="527" alt="image" src="https://github.com/user-attachments/assets/b4cb9024-2e1e-4a50-a015-98df82de37b9" />
 <img width="1421" height="840" alt="image" src="https://github.com/user-attachments/assets/77cfc3ca-8537-4ea7-8fcf-5f260d739444" />
+Anny was not ok with this POE
