@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 using RaceDay.Controllers;
 using RaceDay.Data;
 using RaceDay.Models;
@@ -319,7 +318,7 @@ public class ApiUnitTests
 
     #endregion
 
-       #region Event Controller Tests
+    #region Event Controller Tests
 
     [Fact]
     public async Task GetAllEvents_ReturnsListOfEvents()
@@ -420,4 +419,4 @@ public class ApiUnitTests
     }
 
     #endregion
-    }
+}
