@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using RaceDay.Controllers;
 using RaceDay.Data;
 using RaceDay.Models;
@@ -224,7 +224,6 @@ public class ApiUnitTests
     public async Task Register_ValidRequest_ReturnsCreated()
     {
         // Arrange
-        var db = GetDatabaseContext();
         var mockAuthService = new Mock<IAuthenticationService>();
         mockAuthService.Setup(s => s.RegisterAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new RegisterResult { Success = true, UserId = 1, Message = "User registered successfully" });
@@ -343,7 +342,7 @@ public class ApiUnitTests
         var result = await controller.GetAllEvents();
 
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        var okResult = Assert.IsType<OkObjectResult>(result);
         var returnedEvents = Assert.IsAssignableFrom<IEnumerable<object>>(okResult.Value);
         Assert.Single(returnedEvents);
     }
