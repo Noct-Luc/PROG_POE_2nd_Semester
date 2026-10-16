@@ -48,4 +48,4 @@ jobs:
       with:
         name: xUnit Test Results
         path: '**/test-results.trx'
-        reporter: 'dotnet trx'
+        reporter: 'trx'
