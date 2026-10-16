@@ -319,7 +319,7 @@ public class ApiUnitTests
 
     #endregion
 
-    #region Event Controller Tests
+       #region Event Controller Tests
 
     [Fact]
     public async Task GetAllEvents_ReturnsListOfEvents()
@@ -342,7 +342,7 @@ public class ApiUnitTests
         var result = await controller.GetAllEvents();
 
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        var okResult = Assert.IsType<OkObjectResult>(result);
         var returnedEvents = Assert.IsAssignableFrom<IEnumerable<object>>(okResult.Value);
         Assert.Single(returnedEvents);
     }
@@ -414,10 +414,9 @@ public class ApiUnitTests
         var result = await controller.GetAllTeams();
 
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        var okResult = Assert.IsType<OkObjectResult>(result);
         var returnedTeams = Assert.IsAssignableFrom<IEnumerable<object>>(okResult.Value);
         Assert.Single(returnedTeams);
     }
 
     #endregion
-}
