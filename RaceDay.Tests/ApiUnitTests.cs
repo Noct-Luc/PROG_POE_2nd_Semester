@@ -224,7 +224,6 @@ public class ApiUnitTests
     public async Task Register_ValidRequest_ReturnsCreated()
     {
         // Arrange
-        var db = GetDatabaseContext();
         var mockAuthService = new Mock<IAuthenticationService>();
         mockAuthService.Setup(s => s.RegisterAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new RegisterResult { Success = true, UserId = 1, Message = "User registered successfully" });
