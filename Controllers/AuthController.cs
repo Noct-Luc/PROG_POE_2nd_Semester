@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<object>> Register([FromBody] RegisterRequest request)
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
             return BadRequest(new { message = "Username and password are required" });
@@ -54,7 +54,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<object>> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
             return BadRequest(new { message = "Username and password are required" });
@@ -89,7 +89,7 @@ public class AuthController : ControllerBase
     /// <response code="200">Logout successful</response>
     [HttpPost("logout")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<object>> Logout()
+    public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return Ok(new { message = "Logout successful" });
