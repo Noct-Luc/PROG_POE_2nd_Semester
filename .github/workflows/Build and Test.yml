@@ -24,19 +24,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install .NET SDK
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      - name: Display .NET version
-        run: dotnet --info
+      - name: Restore application project
+        run: dotnet restore RaceDay.csproj
 
-      - name: Restore dependencies
-        run: dotnet restore RaceDay.sln
+      - name: Restore test project
+        run: dotnet restore RaceDay.Tests/RaceDay.Tests.csproj
 
-      - name: Build solution
-        run: dotnet build RaceDay.sln --configuration Release --no-restore
+      - name: Build application
+        run: dotnet build RaceDay.csproj --configuration Release --no-restore
+
+      - name: Build test project
+        run: dotnet build RaceDay.Tests/RaceDay.Tests.csproj --configuration Release
 
       - name: Run unit tests
         run: dotnet test RaceDay.Tests/RaceDay.Tests.csproj --configuration Release --no-build --logger "console;verbosity=normal"
