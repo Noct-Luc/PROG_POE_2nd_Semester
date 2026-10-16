@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using RaceDay.Controllers;
 using RaceDay.Data;
 using RaceDay.Models;
 using RaceDay.Services;
 using Xunit;
 using Moq;
+
+namespace RaceDay.Tests;
 
 namespace RaceDay.Tests;
 
