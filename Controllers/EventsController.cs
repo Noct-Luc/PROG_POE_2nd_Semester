@@ -27,7 +27,7 @@ public class EventsController : ControllerBase
     /// <response code="200">Events retrieved successfully</response>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<object>>> GetAllEvents()
+    public async Task<IActionResult> GetAllEvents()
     {
         var events = await _context.Events
             .Select(e => new { e.EventID, e.EventTitle, e.EventClass, e.TrackID })
@@ -46,7 +46,7 @@ public class EventsController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<object>> GetEvent(int id)
+    public async Task<IActionResult> GetEvent(int id)
     {
         var @event = await _context.Events
             .Where(e => e.EventID == id)
@@ -70,7 +70,7 @@ public class EventsController : ControllerBase
     [Authorize(Policy = "Manager")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<object>> CreateEvent([FromBody] CreateEventRequest request)
+    public async Task<IActionResult> CreateEvent([FromBody] CreateEventRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.EventTitle))
             return BadRequest(new { message = "Event name is required" });
@@ -105,7 +105,7 @@ public class EventsController : ControllerBase
     [Authorize(Policy = "Manager")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<object>> UpdateEvent(int id, [FromBody] UpdateEventRequest request)
+    public async Task<IActionResult> UpdateEvent(int id, [FromBody] UpdateEventRequest request)
     {
         var @event = await _context.Events.FindAsync(id);
         if (@event == null)
@@ -143,7 +143,7 @@ public class EventsController : ControllerBase
     [Authorize(Policy = "Manager")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> DeleteEvent(int id)
+    public async Task<IActionResult> DeleteEvent(int id)
     {
         var @event = await _context.Events.FindAsync(id);
         if (@event == null)
