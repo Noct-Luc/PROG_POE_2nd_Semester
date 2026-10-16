@@ -9,8 +9,6 @@ using Moq;
 
 namespace RaceDay.Tests;
 
-namespace RaceDay.Tests;
-
 /// <summary>
 /// Unit tests for RaceDay API controllers and services.
 /// </summary>
