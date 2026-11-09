@@ -1,0 +1,26 @@
+@model (string Label, string InputName, string InputType, object? Value, string? Placeholder, bool Required, string? HelpText)
+
+<div class="mb-3">
+    <label for="@Model.InputName" class="form-label">
+        @Model.Label
+        @if (Model.Required)
+        {
+            <span class="required" aria-label="required">*</span>
+        }
+    </label>
+    @if (Model.InputType == "textarea")
+    {
+        <textarea id="@Model.InputName" name="@Model.InputName" class="form-control" 
+                  placeholder="@Model.Placeholder" @(Model.Required ? "required" : "")></textarea>
+    }
+    else
+    {
+        <input type="@Model.InputType" id="@Model.InputName" name="@Model.InputName" 
+               class="form-control" placeholder="@Model.Placeholder" value="@Model.Value" 
+               @(Model.Required ? "required" : "") />
+    }
+    @if (!string.IsNullOrEmpty(Model.HelpText))
+    {
+        <small class="form-text text-muted">@Model.HelpText</small>
+    }
+</div>

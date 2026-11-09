@@ -1,0 +1,17 @@
+@model string
+
+@{
+    var (bgClass, icon, displayText) = Model?.ToLower() switch
+    {
+        "confirmed" => ("status-confirmed", "bi-check-circle", "Confirmed"),
+        "pending" => ("status-pending", "bi-hourglass-split", "Pending"),
+        "rejected" => ("status-rejected", "bi-x-circle", "Rejected"),
+        "withdrawn" => ("status-withdrawn", "bi-dash-circle", "Withdrawn"),
+        "completed" => ("status-completed", "bi-trophy", "Completed"),
+        _ => ("bg-secondary", "bi-question-circle", Model ?? "Unknown")
+    };
+}
+
+<span class="badge @bgClass" title="Status: @displayText">
+    <i class="bi @icon"></i> @displayText
+</span>

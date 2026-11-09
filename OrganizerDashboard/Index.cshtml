@@ -1,0 +1,75 @@
+
+ @model RaceDay.MVC.Models.OrganizerDashboardViewModel
+
+@{
+    ViewData["Title"] = "Browse Events";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Browse Available Events</h2>
+
+    <form asp-controller="ParticipantDashboard"
+          asp-action="BrowseEvents"
+          method="get"
+          class="row g-3 mb-4">
+
+        <div class="col-md-5">
+            <input type="text"
+                   name="searchTerm"
+                   class="form-control"
+                   placeholder="Search events..."
+                   value="@Context.Request.Query["searchTerm"]" />
+        </div>
+
+        <div class="col-md-4">
+            <input type="text"
+                   name="filterType"
+                   class="form-control"
+                   placeholder="Filter by event class..."
+                   value="@Context.Request.Query["filterType"]" />
+        </div>
+
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+
+            <a asp-action="BrowseEvents"
+               class="btn btn-secondary">
+                Clear
+            </a>
+        </div>
+
+    </form>
+
+    @if (Model != null && Model.Events.Any())
+    {
+        <div class="row">
+
+            @foreach (var item in Model.Events)
+            {
+                <tr>
+                    <td>@item.EventID</td>
+                    <td>@item.EventTitle</td>
+                    <td>@item.EventType</td>
+                    <td>@item.TrackID</td>
+                </tr>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No events are currently available.
+        </div>
+    }
+
+    <a asp-controller="ParticipantDashboard"
+       asp-action="Index"
+       class="btn btn-secondary mt-3">
+        Back to Dashboard
+    </a>
+
+</div>

@@ -1,0 +1,105 @@
+﻿@model RaceDay.MVC.Models.EventDetailsViewModel
+
+@{
+    ViewData["Title"] = "Event Details";
+}
+
+<div class="container mt-4">
+    <h2>Event Details</h2>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    @if (Model.Event == null)
+    {
+        <div class="alert alert-warning">
+            Event information could not be found.
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm mt-3">
+            <div class="card-body">
+                <h3 class="card-title">@Model.Event.EventTitle</h3>
+
+                <hr />
+
+                <p>
+                    <strong>Event ID:</strong>
+                    @Model.Event.EventID
+                </p>
+
+                <p>
+                    <strong>Event Type:</strong>
+                    @Model.Event.EventType
+                </p>
+
+                <p>
+                    <strong>Track ID:</strong>
+                    @Model.Event.TrackID
+                </p>
+
+                <hr />
+
+                <h5>Enrol in this Event</h5>
+
+                @if (Model.Categories == null || !Model.Categories.Any())
+                {
+                    <div class="alert alert-info">
+                        No categories are currently available for this event.
+                    </div>
+                }
+                else
+                {
+                    <form asp-controller="ParticipantDashboard"
+                          asp-action="EnrollEvent"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="eventId"
+                               value="@Model.Event.EventID" />
+
+                        <div class="mb-3">
+                            <label for="categoryId" class="form-label">
+                                Select Category
+                            </label>
+
+                            <select name="categoryId"
+                                    id="categoryId"
+                                    class="form-select"
+                                    required>
+                                <option value="">-- Select a Category --</option>
+
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <option value="@category.CategoryID">
+                                        @category.CategoryName (@category.CategoryType)
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Enrol Now
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+    }
+
+    <a asp-controller="ParticipantDashboard"
+       asp-action="BrowseEvents"
+       class="btn btn-secondary mt-3">
+        Back to Browse Events
+    </a>
+</div>

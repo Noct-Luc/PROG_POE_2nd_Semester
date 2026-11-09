@@ -1,0 +1,161 @@
+@model RaceDay.MVC.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register - RaceDay";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+
+                    <h1 class="card-title text-center mb-4">
+                        <i class="bi bi-speedometer2"></i>
+                        Create RaceDay Account
+                    </h1>
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="alert alert-danger"
+                         role="alert">
+                    </div>
+
+                    <form asp-controller="Account"
+                          asp-action="Register"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="Username"
+                                   class="form-label">
+                                Username <span class="text-danger">*</span>
+                            </label>
+
+                            <input asp-for="Username"
+                                   class="form-control form-control-lg"
+                                   placeholder="Choose a username"
+                                   autocomplete="username" />
+
+                            <span asp-validation-for="Username"
+                                  class="text-danger d-block mt-1">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="UserEmail"
+                                   class="form-label">
+                                Email Address
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input asp-for="UserEmail"
+                                   type="email"
+                                   class="form-control form-control-lg"
+                                   placeholder="Enter your email"
+                                   autocomplete="email" />
+
+                            <span asp-validation-for="UserEmail"
+                                  class="text-danger d-block mt-1">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="UserRole"
+                                   class="form-label">
+                                Account Type
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <select asp-for="UserRole"
+                                    class="form-select form-select-lg">
+                                <option value="Participant">
+                                    Participant - Join and race
+                                </option>
+
+                                <option value="Manager">
+                                    Organiser - Create and manage events
+                                </option>
+                            </select>
+
+                            <span asp-validation-for="UserRole"
+                                  class="text-danger d-block mt-1">
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Password"
+                                   class="form-label">
+                                Password
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input asp-for="Password"
+                                   type="password"
+                                   class="form-control form-control-lg"
+                                   placeholder="Create a strong password"
+                                   autocomplete="new-password" />
+
+                            <span asp-validation-for="Password"
+                                  class="text-danger d-block mt-1">
+                            </span>
+
+                            <small class="form-text text-muted">
+                                Minimum 6 characters
+                            </small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ConfirmPassword"
+                                   class="form-label">
+                                Confirm Password
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <input asp-for="ConfirmPassword"
+                                   type="password"
+                                   class="form-control form-control-lg"
+                                   placeholder="Confirm your password"
+                                   autocomplete="new-password" />
+
+                            <span asp-validation-for="ConfirmPassword"
+                                  class="text-danger d-block mt-1">
+                            </span>
+                        </div>
+
+                        <button type="submit"
+                                class="btn btn-success btn-lg w-100 mb-3">
+                            Create Account
+                        </button>
+
+                        <div class="text-center">
+                            <p class="mb-0">
+                                Already have an account?
+                                <a asp-controller="Account"
+                                   asp-action="Login"
+                                   class="fw-bold">
+                                    Login here
+                                </a>
+                            </p>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,119 @@
+@model RaceDay.MVC.Models.ParticipantDashboardViewModel
+
+@{
+    ViewData["Title"] = "Participant Dashboard - RaceDay";
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="mb-0">
+                <i class="bi bi-speedometer2"></i> Welcome, Racer!
+            </h1>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Total Enrollments</h6>
+                            <h2 class="mb-0">@Model.TotalEnrollments</h2>
+                        </div>
+                        <i class="bi bi-check-circle" style="font-size: 2rem; opacity: 0.7;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Completed Events</h6>
+                            <h2 class="mb-0">@Model.CompletedEvents</h2>
+                        </div>
+                        <i class="bi bi-trophy" style="font-size: 2rem; opacity: 0.7;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <a asp-controller="ParticipantDashboard" asp-action="BrowseEvents" class="btn btn-primary btn-lg w-100 mb-2">
+                        <i class="bi bi-search"></i> Browse Upcoming Events
+                    </a>
+                    <a asp-controller="ParticipantDashboard" asp-action="MyResults" class="btn btn-info btn-lg w-100">
+                        <i class="bi bi-bar-chart"></i> View My Results
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Enrollments -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">My Enrollments</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model?.Enrollments?.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Event Name</th>
+                                        <th>Date</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var enrollment in Model.Enrollments.OrderBy(e => e.EventDate))
+                                    {
+                                        var statusBadge = enrollment.Status switch
+                                        {
+                                            "Confirmed" => "status-confirmed",
+                                            "Pending" => "status-pending",
+                                            "Cancelled" => "status-rejected",
+                                            _ => "bg-secondary"
+                                        };
+
+                                        <tr>
+                                            <td><strong>@enrollment.EventTitle</strong></td>
+                                            <td>@(enrollment.EventDate?.ToString("MMM dd, yyyy") ?? "Date not set")</td>
+                                            <td>@enrollment.Category</td>
+                                            <td><span class="badge @statusBadge">@enrollment.Status</span></td>
+                                            <td>
+                                                <a asp-controller="ParticipantDashboard" asp-action="EnrollmentDetails" asp-route-enrollmentId="@enrollment.EnrolmentID" class="btn btn-sm btn-info">
+                                                    <i class="bi bi-info-circle"></i> Details
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info" role="alert">
+                            <i class="bi bi-info-circle"></i> You haven't enrolled in any events yet.
+                            <a asp-controller="ParticipantDashboard" asp-action="BrowseEvents" class="alert-link">Browse upcoming events</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
