@@ -1,0 +1,45 @@
+﻿@model List<RaceDay.MVC.Models.EventDto>
+
+@{
+    ViewData["Title"] = "Manage Events";
+}
+
+<div class="container mt-4">
+
+    <h2>Manage Events</h2>
+
+    <a asp-action="CreateEvent" class="btn btn-primary mb-3">
+        Create New Event
+    </a>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Event ID</th>
+                    <th>Event Title</th>
+                    <th>Event Class</th>
+                    <th>Track ID</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.EventID</td>
+                        <td>@item.EventTitle</td>
+                        <td>@item.EventClass</td>
+                        <td>@item.TrackID</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No events have been created yet.</p>
+    }
+
+</div>

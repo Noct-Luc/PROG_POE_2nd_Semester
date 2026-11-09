@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="RaceDay - Event Management & Race Tracking Platform" />
+    <meta name="theme-color" content="#FF6B35" />
+    <title>@ViewData["Title"] - RaceDay</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
+    
+    <!-- RaceDay Theme CSS -->
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+
+    <header role="banner">
+        <nav class="navbar navbar-expand-lg navbar-dark" role="navigation" aria-label="Main navigation">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index" title="RaceDay Home">
+                    <i class="bi bi-speedometer2"></i> RaceDay
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            @await Html.PartialAsync("_NavbarPartial")
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login" title="Login to your account">
+                                    <i class="bi bi-box-arrow-in-right"></i> Login
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Register" title="Create a new account">
+                                    <i class="bi bi-person-plus"></i> Register
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content" role="main">
+        <!-- Alert Messages -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
+                <i class="bi bi-check-circle me-2"></i>
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mx-3 mt-3" role="alert">
+                <i class="bi bi-exclamation-circle me-2"></i>
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (TempData["WarningMessage"] != null)
+        {
+            <div class="alert alert-warning alert-dismissible fade show mx-3 mt-3" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                @TempData["WarningMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (TempData["InfoMessage"] != null)
+        {
+            <div class="alert alert-info alert-dismissible fade show mx-3 mt-3" role="alert">
+                <i class="bi bi-info-circle me-2"></i>
+                @TempData["InfoMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="container-fluid py-4">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>
+                        <i class="bi bi-speedometer2"></i> RaceDay
+                    </h5>
+                    <p>&copy; 2026 RaceDay. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>
+                        <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a> | 
+                        <a asp-controller="Home" asp-action="Terms">Terms of Service</a> |
+                        <a href="mailto:support@raceday.com">Contact Support</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,15 @@
+@model (string Icon, string Title, string Message, string? ActionText, string? ActionUrl)
+
+<div class="alert alert-info d-flex align-items-center mb-0" role="alert">
+    <i class="bi @Model.Icon me-3" style="font-size: 2rem;"></i>
+    <div>
+        <strong>@Model.Title</strong><br />
+        @Model.Message
+        @if (!string.IsNullOrEmpty(Model.ActionText) && !string.IsNullOrEmpty(Model.ActionUrl))
+        {
+            <a href="@Model.ActionUrl" class="alert-link ms-2">
+                @Model.ActionText <i class="bi bi-arrow-right"></i>
+            </a>
+        }
+    </div>
+</div>

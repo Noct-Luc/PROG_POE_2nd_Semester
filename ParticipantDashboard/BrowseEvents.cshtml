@@ -1,0 +1,115 @@
+﻿@model List<RaceDay.MVC.Models.EventDto>
+
+@{
+    ViewData["Title"] = "Browse Events";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Browse Available Events</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <form asp-controller="ParticipantDashboard"
+          asp-action="BrowseEvents"
+          method="get"
+          class="row g-3 mb-4">
+
+        <div class="col-md-5">
+            <input type="text"
+                   name="searchTerm"
+                   class="form-control"
+                   placeholder="Search events..."
+                   value="@Context.Request.Query["searchTerm"]" />
+        </div>
+
+        <div class="col-md-4">
+            <input type="text"
+                   name="filterType"
+                   class="form-control"
+                   placeholder="Filter by event type..."
+                   value="@Context.Request.Query["filterType"]" />
+        </div>
+
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+
+            <a asp-action="BrowseEvents"
+               class="btn btn-secondary">
+                Clear
+            </a>
+        </div>
+
+    </form>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+
+            @foreach (var raceEvent in Model)
+            {
+                <div class="col-md-4 mb-4">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <div class="card-body">
+
+                            <h5 class="card-title">
+                                @raceEvent.EventTitle
+                            </h5>
+
+                            <p class="card-text">
+                                <strong>Event Type:</strong>
+                                @raceEvent.EventType
+                            </p>
+
+                            <p class="card-text">
+                                <strong>Event Date:</strong>
+                               
+                            </p>
+
+                            <a asp-controller="ParticipantDashboard"
+                               asp-action="EventDetails"
+                               asp-route-eventId="@raceEvent.EventID"
+                               class="btn btn-primary">
+                                View Details
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No upcoming events were found.
+        </div>
+    }
+
+    <a asp-controller="ParticipantDashboard"
+       asp-action="Index"
+       class="btn btn-secondary mt-3">
+        Back to Dashboard
+    </a>
+
+</div>
+```
