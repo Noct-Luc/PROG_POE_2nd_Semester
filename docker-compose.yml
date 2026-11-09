@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  raceday-mvc:
+    build:
+      context: .
+      dockerfile: RaceDay.MVC/Dockerfile
+    container_name: raceday-mvc
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ApiSettings__BaseUrl: ${API_BASE_URL:-https://raceday-api:7176}
+      ApiSettings__AllowedOrigins: ${API_ALLOWED_ORIGINS:-https://raceday-api:7176}
+    depends_on:
+      - raceday-api
+    restart: unless-stopped
+    networks:
+      - raceday-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  raceday-api:
+    build:
+      context: .
+      dockerfile: RaceDay/Dockerfile
+    container_name: raceday-api
+    ports:
+      - "7176:7176"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: https://+:7176;http://+:8000
+    restart: unless-stopped
+    networks:
+      - raceday-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://localhost:7176/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  raceday-network:
+    driver: bridge

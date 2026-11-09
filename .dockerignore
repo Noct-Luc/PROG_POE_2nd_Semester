@@ -1,0 +1,15 @@
+.git
+.gitignore
+.vs
+.vscode
+bin
+obj
+dist
+*.user
+*.suo
+*.sln.docstates
+.DS_Store
+node_modules
+npm-debug.log
+.env
+.env.local
